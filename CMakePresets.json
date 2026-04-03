@@ -1,0 +1,22 @@
+{
+  "version": 6,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 23,
+    "patch": 0
+  },
+  "include": ["build/CMakePresets.json"],
+  "configurePresets": [
+    {
+      "name": "conan-ninja-release",
+      "inherits": "conan-release",
+      "generator": "Ninja"
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "conan-ninja-release",
+      "configurePreset": "conan-ninja-release"
+    }
+  ]
+}

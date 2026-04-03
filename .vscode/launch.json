@@ -1,0 +1,16 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug textpad",
+      "type": "codelldb",
+      "request": "launch",
+      "program": "${workspaceFolder}/build/textpad",
+      "args": [],
+      "cwd": "${workspaceFolder}",
+      "preLaunchTask": "make: build",
+      "stopOnEntry": false,
+      "sourceLanguages": ["cpp"]
+    }
+  ]
+}
