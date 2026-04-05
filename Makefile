@@ -18,9 +18,9 @@ all:
 	./$(EXE)
 
 deps:
-	conan install . --output-folder=$(BUILD_DIR) --build=missing $(CONAN_FLAGS)
+	conan install . --output-folder=$(BUILD_DIR) --build=missing $(CONAN_FLAGS) 
 
-configure: deps
+config: deps
 	cmake --preset $(CMAKE_PRESET)
 
 build:
@@ -33,6 +33,6 @@ help:
 	@echo "make / make run   - build + run ./$(EXE) (default)"
 	@echo "make all          - conan install, configure, build, run (first-time / after clean)"
 	@echo "make deps         - conan install only"
-	@echo "make configure    - deps + cmake --preset $(CMAKE_PRESET)"
+	@echo "make config       - deps + cmake --preset $(CMAKE_PRESET)"
 	@echo "make build        - compile only"
 	@echo "make clean        - remove $(BUILD_DIR)/"
