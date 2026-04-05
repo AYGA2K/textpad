@@ -1,6 +1,5 @@
 BUILD_DIR     := build
 TARGET        := textpad
-# Ninja is set in CMakePresets.json (inherits Conan preset); needs `ninja` on PATH.
 CMAKE_PRESET  := conan-ninja-release
 CONAN_FLAGS   := -s build_type=Release -s compiler.cppstd=gnu20
 
