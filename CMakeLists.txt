@@ -23,7 +23,7 @@ GIT_SHALLOW TRUE
 )
 fetchcontent_makeavailable(raygui)
 
-add_executable(textpad src/main.cpp)
+add_executable(textpad src/main.cpp src/explorer.cpp)
 
 target_include_directories(textpad PRIVATE ${raygui_SOURCE_DIR}/src)
 target_link_libraries(textpad PRIVATE raylib)
