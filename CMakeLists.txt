@@ -27,5 +27,5 @@ add_executable(textpad src/main.cpp src/explorer.cpp)
 
 target_include_directories(textpad PRIVATE ${raygui_SOURCE_DIR}/src)
 target_link_libraries(textpad PRIVATE raylib)
-target_compile_definitions(textpad PRIVATE RAYGUI_IMPLEMENTATION)
+set_source_files_properties(src/main.cpp PROPERTIES COMPILE_DEFINITIONS RAYGUI_IMPLEMENTATION)
 target_compile_options(textpad PRIVATE -Wall -Wextra -Wpedantic)
