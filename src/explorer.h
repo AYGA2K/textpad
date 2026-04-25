@@ -1,5 +1,6 @@
 #pragma once
 #include "raylib.h"
+#include "state.h"
 #include <string>
 #include <vector>
 
@@ -14,6 +15,7 @@ struct ExplorerItem {
 };
 
 struct Explorer {
+  State *state;
   std::string path;
   std::vector<ExplorerItem> items;
   bool visible;
@@ -27,4 +29,7 @@ struct Explorer {
   void deleteFile(int cursorX);
   void copyFile(int cursorX);
   void moveFile(int cursorX);
+private:
+  void drawItems(std::vector<ExplorerItem> &items, float &x, float &y,
+                 float panelLeft, float rowWidth);
 };

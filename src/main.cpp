@@ -1,6 +1,8 @@
+#include "editor.h"
 #include "explorer.h"
 #include "raygui.h"
 #include "raylib.h"
+#include "state.h"
 #include "style_catppuccin_mocha.h"
 
 int main() {
@@ -13,13 +15,24 @@ int main() {
   GuiSetFont(fontBm);
   GuiSetStyle(DEFAULT, TEXT_SIZE, 16);
 
+  State state;
+  state.font = fontBm;
+
   Explorer explorer;
+  explorer.state = &state;
   explorer.scan();
+
+  Editor editor;
+  editor.state = &state;
 
   while (!WindowShouldClose()) {
     BeginDrawing();
     ClearBackground(GetColor(MOCHA_BASE));
     explorer.draw();
+    editor.isFocused = true;
+    editor.cursor.x = 250;
+    editor.cursor.y = 30;
+    editor.draw();
     EndDrawing();
   }
 

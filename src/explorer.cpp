@@ -1,5 +1,6 @@
 #include "explorer.h"
 #include "raygui.h"
+#include "raylib.h"
 #include "style_catppuccin_mocha.h"
 #include <filesystem>
 #include <string>
@@ -7,7 +8,6 @@
 
 namespace fs = std::filesystem;
 
-static const int BUTTON_HEIGHT = 24;
 static const int INDENT = 20;
 
 static std::vector<ExplorerItem> buildTree(fs::path path) {
@@ -49,26 +49,29 @@ static int countItems(const std::vector<ExplorerItem> &items) {
   return count;
 }
 
-static void drawItems(std::vector<ExplorerItem> &items, float &x, float &y,
-                      float panelLeft, float rowWidth,
-                      ExplorerItem *&selected) {
+void Explorer::drawItems(std::vector<ExplorerItem> &items, float &x, float &y,
+                         float panelLeft, float rowWidth) {
+  int lineHeight = this->state->lineHeight;
   for (auto &item : items) {
-    y += BUTTON_HEIGHT;
+    y += lineHeight;
 
-    if (&item == selected)
-      DrawRectangleRec({panelLeft, y, rowWidth, (float)BUTTON_HEIGHT},
+    if (&item == this->selectedItem)
+      DrawRectangleRec({panelLeft, y, rowWidth, (float)lineHeight},
                        GetColor(MOCHA_SURFACE1));
 
-    if (GuiButton({x, y, panelLeft + rowWidth - x, (float)BUTTON_HEIGHT},
+    if (GuiButton({x, y, panelLeft + rowWidth - x, (float)lineHeight},
                   item.name.c_str())) {
-      selected = &item;
+      this->selectedItem = &item;
       if (item.type == ItemType::DIRECTORY) {
         item.isOpen = !item.isOpen;
       }
     }
     if (!item.children.empty() && item.isOpen) {
+      DrawLine((x + INDENT), (y + lineHeight), (x + INDENT),
+               (y + (countItems(item.children) + 1) * lineHeight),
+               GetColor(MOCHA_SURFACE1));
       x += INDENT;
-      drawItems(item.children, x, y, panelLeft, rowWidth, selected);
+      drawItems(item.children, x, y, panelLeft, rowWidth);
       x -= INDENT;
     }
   }
@@ -88,7 +91,7 @@ void Explorer::draw() {
   GuiSetStyle(BUTTON, TEXT_COLOR_FOCUSED, MOCHA_TEXT);
   GuiSetStyle(BUTTON, TEXT_COLOR_PRESSED, MOCHA_TEXT);
 
-  float contentHeight = countItems(items) * BUTTON_HEIGHT;
+  float contentHeight = countItems(items) * this->state->lineHeight;
   Rectangle panelBounds = {0, 0, 220, (float)GetScreenHeight()};
   Rectangle contentRect = {0, 0, 200, contentHeight};
   Rectangle view = {0, 0, 0, 0};
@@ -98,6 +101,6 @@ void Explorer::draw() {
   BeginScissorMode((int)view.x, (int)view.y, (int)view.width, (int)view.height);
   float x = panelBounds.x + scrollOffset.x;
   float y = panelBounds.y + scrollOffset.y;
-  drawItems(items, x, y, panelBounds.x, view.width, selectedItem);
+  drawItems(items, x, y, panelBounds.x, view.width);
   EndScissorMode();
 }
